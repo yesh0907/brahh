@@ -12,16 +12,16 @@ app.run(function($ionicPlatform, $rootScope, $state, $firebase) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
-        if (window.cordova && window.cordova.plugins && window.cordova
-            .plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(
-                true);
-        }
-        if (window.StatusBar) {
+    if (window.cordova && window.cordova.plugins && window.cordova
+        .plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(
+            true);
+}
+if (window.StatusBar) {
             // org.apache.cordova.statusbar required
             StatusBar.styleLightContent();
         }
-        fb = new Firebase("https://brahh.firebaseio.com");
+        fb = new Firebase("https://yeshauth.firebaseio.com/");
     });
 });
 
@@ -34,7 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
     // setup an abstract state for the tabs directive
-        .state('tab', {
+    .state('tab', {
         url: "/tab",
         abstract: true,
         templateUrl: "templates/tabs.html"
