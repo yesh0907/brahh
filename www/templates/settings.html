@@ -1,0 +1,13 @@
+<ion-view view-title="Edit Profile" ng-init="start()">
+    <ion-content>
+        <div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input ng-model="name" type="text"  />
+                </label>
+            </div>
+            <button class="button button-block button-assertive" ng-click="save(name)">Save</button>
+        </div>
+    </ion-content>
+</ion-view>

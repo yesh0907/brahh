@@ -18,11 +18,11 @@ app.run(function($ionicPlatform, $rootScope, $state, $firebase) {
             true);
 }
 if (window.StatusBar) {
-            // org.apache.cordova.statusbar required
-            StatusBar.styleLightContent();
-        }
-        fb = new Firebase("https://yeshauth.firebaseio.com/");
-    });
+                // org.apache.cordova.statusbar required
+                StatusBar.styleLightContent();
+            }
+            fb = new Firebase("https://yeshauth.firebaseio.com/");
+        });
 });
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -48,6 +48,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 controller: 'ChatsCtrl'
             }
         }
+    })
+
+    .state('profile', {
+        url: "/profile",
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl'
+    })
+
+    .state('settings', {
+        url: "/settings",
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
     })
 
     .state('login', {

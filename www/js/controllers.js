@@ -1,7 +1,7 @@
 var app = angular.module('starter.controllers', ['firebase'])
 var fb = new Firebase("https://yeshauth.firebaseio.com/");
 
-app.controller('ChatsCtrl', function($scope, $firebaseObject, $rootScope, $ionicPopup) {
+app.controller('ChatsCtrl', function($scope, $firebaseObject, $ionicPopup, $state) {
     $scope.start = function() {
         fbAuth = fb.getAuth();
         if (fbAuth) {
@@ -9,10 +9,15 @@ app.controller('ChatsCtrl', function($scope, $firebaseObject, $rootScope, $ionic
             syncObject.$bindTo($scope, "data");
         }
         else {
-            console.log("ERROR...");
+            $ionicPopup.alert({
+                title: "Sorry",
+                template: "Please login in to send chats..."
+            });
+            $state.go('/login')
         }
     }
     $scope.sendChat = function(chat) {
+        var user = $scope.data.userData[0].name;
         var timeStamp = function() {
             // Create a date object with the current time
             var now = new Date();
@@ -51,33 +56,30 @@ app.controller('ChatsCtrl', function($scope, $firebaseObject, $rootScope, $ionic
             $scope.data.chats = [];
         }
         $scope.data.chats.push({
-            user: 'guest',
-            message: chat.message,
+            message: user + " Brahhed You",
             time: timeStamp()
         });
-        chat.message = "";
     }
 });
 
 app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPopup, $rootScope){
-  $scope.login = function(username, password) {
-    var fbAuth = $firebaseAuth(fb);
-    fbAuth.$authWithPassword({
-      email: username,
-      password: password
-  }).then(function(authData) {
-      $location.path('/tab/chats');
-      $rootScope.username = fbAuth.email;
+    $scope.login = function(username, password) {
+        var fbAuth = $firebaseAuth(fb);
+        fbAuth.$authWithPassword({
+          email: username,
+          password: password
+      }).then(function(authData) {
+          $location.path('/tab/chats');
+          $rootScope.username = fbAuth.email;
 
-  }).catch(function(error) {
-      $ionicPopup.alert({
-        title: "Error",
-        template: error
-    });
-  });
-}
-
-$scope.register = function(username, password) {
+      }).catch(function(error) {
+          $ionicPopup.alert({
+            title: "Error",
+            template: error
+        });
+      });
+  }
+  $scope.register = function(username, password) {
     var fbAuth = $firebaseAuth(fb);
     fbAuth.$createUser({email: username, password: password}).then(function() {
       return fbAuth.$authWithPassword({
@@ -93,4 +95,54 @@ $scope.register = function(username, password) {
     });
   });
 }
+});
+
+app.controller('ProfileCtrl', function($scope, $location, $firebaseObject) {
+    $scope.start = function() {
+        fbAuth = fb.getAuth();
+        if (fbAuth) {
+            var syncObject = $firebaseObject(fb.child("users/" + fbAuth.uid));
+            syncObject.$bindTo($scope, "data");
+        }
+        else {
+            $ionicPopup.alert({
+                title: "Sorry",
+                template: "Please login..."
+            });
+            $state.go('/login')
+        }
+    }
+
+    $scope.settingsNav = function() {
+        $location.path('/settings');
+    }
+
+    $scope.chatNav = function() {
+        $location.path('/tab/chats');
+    }
+});
+
+app.controller('SettingsCtrl', function($scope, $state, $firebaseObject) {
+    $scope.start = function() {
+        fbAuth = fb.getAuth();
+        if (fbAuth) {
+            var syncObject = $firebaseObject(fb.child("users/" + fbAuth.uid));
+            syncObject.$bindTo($scope, "data");
+        }
+        else {
+            $ionicPopup.alert({
+                title: "Sorry",
+                template: "Please login..."
+            });
+            $state.go('/login')
+        }
+    }
+
+    $scope.save = function(nameValue) {
+        $scope.data.userData = [];
+        $scope.data.userData.push({
+            name: nameValue
+        });
+        $state.go('profile');
+    }
 });

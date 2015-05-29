@@ -1,0 +1,18 @@
+<ion-view view-title="Profile" ng-init="start()">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="settingsNav()">
+            Edit
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="left">
+        <button class="button icon-left ion-chevron-left" ng-click="chatNav()"></button>
+    </ion-nav-buttons>
+    <ion-content>
+    <div>
+        <div class="list list-inset" ng-repeat="d in data.userData">
+            <h4>Name: {{d.name}}</h4>
+            <h4>Age: {{d.age}}</h4>
+        </div>
+    </div>
+    </ion-content>
+</ion-view>
