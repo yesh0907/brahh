@@ -18,47 +18,19 @@ app.controller('ChatsCtrl', function($scope, $firebaseObject, $ionicPopup, $stat
     }
     $scope.sendChat = function(chat) {
         var user = $scope.data.userData[0].name;
-        var timeStamp = function() {
-            // Create a date object with the current time
-            var now = new Date();
 
-            // Create an array with the current month, day and time
-            var date = [now.getMonth() + 1, now.getDate(),
-            now.getFullYear()
-            ];
-
-            // Create an array with the current hour, minute and second
-            var time = [now.getHours(), now.getMinutes()];
-
-            // Determine AM or PM suffix based on the hour
-            var suffix = (time[0] < 12) ? "AM" : "PM";
-
-            // Convert hour from military time
-            time[0] = (time[0] < 12) ? time[0] : time[0] -
-            12;
-
-            // If hour is 0, set it to 12
-            time[0] = time[0] || 12;
-
-            // If seconds and minutes are less than 10, add a zero
-            for (var i = 1; i < 3; i++) {
-                if (time[i] < 10) {
-                    time[i] = "0" + time[i];
-                }
-            }
-
-            // Return the formatted string
-            return date.join("/") + " " + time.join(":") +
-            " " + suffix;
-        }
+        var timeStamp = moment().format('llll');
 
         if ($scope.data.hasOwnProperty("chats") !== true) {
             $scope.data.chats = [];
         }
         $scope.data.chats.push({
-            message: user + " Brahhed You",
-            time: timeStamp()
+            message: user + " Brahhed you",
+            time: timeStamp
         });
+    }
+    $scope.contactsNav = function() {
+        $state.go('contacts');
     }
 });
 
@@ -70,8 +42,6 @@ app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPop
           password: password
       }).then(function(authData) {
           $location.path('/tab/chats');
-          $rootScope.username = fbAuth.email;
-
       }).catch(function(error) {
           $ionicPopup.alert({
             title: "Error",
@@ -97,7 +67,7 @@ app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPop
 }
 });
 
-app.controller('ProfileCtrl', function($scope, $location, $firebaseObject) {
+app.controller('ProfileCtrl', function($scope, $location, $firebaseObject, $ionicPopup) {
     $scope.start = function() {
         fbAuth = fb.getAuth();
         if (fbAuth) {
@@ -122,7 +92,7 @@ app.controller('ProfileCtrl', function($scope, $location, $firebaseObject) {
     }
 });
 
-app.controller('SettingsCtrl', function($scope, $state, $firebaseObject) {
+app.controller('SettingsCtrl', function($scope, $state, $firebaseObject, $ionicPopup) {
     $scope.start = function() {
         fbAuth = fb.getAuth();
         if (fbAuth) {
@@ -138,11 +108,56 @@ app.controller('SettingsCtrl', function($scope, $state, $firebaseObject) {
         }
     }
 
-    $scope.save = function(nameValue) {
+    $scope.save = function(nameValue, ageValue) {
         $scope.data.userData = [];
         $scope.data.userData.push({
-            name: nameValue
+            name: nameValue,
+            age: ageValue
         });
         $state.go('profile');
     }
+});
+
+app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicPopup) {
+    $scope.start = function() {
+        fbAuth = fb.getAuth();
+        if (fbAuth) {
+            var syncObject = $firebaseObject(fb.child("users/" + fbAuth.uid));
+            syncObject.$bindTo($scope, "data");
+        }
+        else {
+            $ionicPopup.alert({
+                title: "Sorry",
+                template: "Please login..."
+            });
+            $state.go('/login')
+        }
+    }
+
+    function isInArray(value, array) {
+        return array.indexOf(value) > -1;
+    }
+
+  $scope.addContact = function(contact) {
+    $ionicPopup.prompt({
+        title: "Username of Contact that you wish to add: "
+    })
+    .then(function(result) {
+        if (result !== "") {
+            if ($scope.data.hasOwnProperty("contacts") !== true) {
+                $scope.data.contacts = [];
+            }
+            $scope.data.contacts.push({
+                name: result
+            });
+        }
+        else {
+            console.log("Cancelled");
+        }
+    })
+}
+
+$scope.chatNav = function() {
+    $state.go('tab.chats')
+}
 });

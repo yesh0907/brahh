@@ -62,6 +62,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'SettingsCtrl'
     })
 
+    .state('contacts', {
+        url: "/contacts",
+        templateUrl: 'templates/contacts.html',
+        controller: 'ContactsCtrl'
+    })
+
     .state('login', {
         url: '/login',
         templateUrl: 'templates/login.html',

@@ -1,0 +1,21 @@
+<ion-view title="Contacts" ng-init="start()">
+    <ion-nav-buttons side="left">
+        <button class="button icon-left ion-chevron-left" ng-click="chatNav()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button icon-left ion-plus" ng-click="addContact()"></button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list list-inset">
+          <label class="item item-input">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" placeholder="Search" ng-model="query">
+          </label>
+        </div>
+        <div class="list">
+            <div class="item" ng-repeat="d in data.contacts | orderBy: 'name' | filter: query">
+                <h3>{{d.name}}</h3>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
