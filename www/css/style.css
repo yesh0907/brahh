@@ -1,1 +1,8 @@
-/* Empty. Add your own CSS if you like */
+.user-true {
+	font-weight: bold;
+	color: black;
+}
+
+.list-true {
+	background-color: #FFCC00;
+}

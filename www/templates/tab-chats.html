@@ -1,6 +1,6 @@
 <ion-view view-title="Chats" ng-init="start()">
     <ion-nav-buttons side="right">
-        <button class="button icon ion-person-add" ng-click="contactsNav()">
+        <button class="button icon ion-ios-telephone" ng-click="contactsNav()">
         </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="left">
@@ -8,12 +8,16 @@
         </button>
     </ion-nav-buttons>
     <ion-content>
+        <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="Search" ng-model="query">
+        </label>
         <div class="list">
-            <div class="item" ng-repeat="chat in data.chats">
-                <label style="display: inline-block; float: right; font-size: 65%;">
+            <div class="item" ng-repeat="chat in data.chats | orderBy: 'time' | filter: query">
+                <label style="display: inline-block; float: right; font-size: 55%;">
                     {{chat.time}}
                 </label>
-                <h2>{{chat.message}}</h2>
+                <h3>{{chat.message}}</h3>
             </div>
         </div>
     </ion-content>
