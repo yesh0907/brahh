@@ -16,21 +16,14 @@ app.controller('ChatsCtrl', function($scope, $firebaseObject, $ionicPopup, $stat
             $state.go('/login')
         }
     }
-    $scope.sendChat = function(chat) {
-        var user = $scope.data.userData[0].name;
-
-        var timeStamp = moment().format('llll');
-
-        if ($scope.data.hasOwnProperty("chats") !== true) {
-            $scope.data.chats = [];
-        }
-        $scope.data.chats.push({
-            message: user + " Brahhed you",
-            time: timeStamp
-        });
+    $scope.selectUsers = function() {
+        $state.go('sendTo');
     }
     $scope.contactsNav = function() {
         $state.go('contacts');
+    }
+    $scope.profileNav = function() {
+        $state.go('profile');
     }
 });
 
@@ -134,30 +127,65 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
         }
     }
 
-    function isInArray(value, array) {
-        return array.indexOf(value) > -1;
+    $scope.addContact = function(contact) {
+        $ionicPopup.prompt({
+            title: "Username of Contact that you wish to add: ",
+            inputType: "text"
+        })
+        .then(function(result) {
+            if (result !== "") {
+                if ($scope.data.hasOwnProperty("contacts") !== true) {
+                    $scope.data.contacts = [];
+                }
+                $scope.data.contacts.push({
+                    name: result
+                });
+                console.log($scope.data.contacts);
+            }
+            else if (result === undefined) {
+                console.log("Cancelled");
+            }
+        })
     }
 
-  $scope.addContact = function(contact) {
-    $ionicPopup.prompt({
-        title: "Username of Contact that you wish to add: "
-    })
-    .then(function(result) {
-        if (result !== "") {
-            if ($scope.data.hasOwnProperty("contacts") !== true) {
-                $scope.data.contacts = [];
-            }
-            $scope.data.contacts.push({
-                name: result
-            });
+    $scope.chatNav = function() {
+        $state.go('tab.chats')
+    }
+});
+
+app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $ionicPopup, $location) {
+    $scope.start = function() {
+        fbAuth = fb.getAuth();
+        if (fbAuth) {
+            var syncObject = $firebaseObject(fb.child("users/" + fbAuth.uid));
+            syncObject.$bindTo($scope, "data");
         }
         else {
-            console.log("Cancelled");
+            $ionicPopup.alert({
+                title: "Sorry",
+                template: "Please login..."
+            });
+            $state.go('/login')
         }
-    })
-}
+    }
 
-$scope.chatNav = function() {
-    $state.go('tab.chats')
-}
+    $scope.sendChat = function(user) {
+        var user = $scope.data.userData[0].name;
+
+        var timeStamp = moment().format('llll');
+
+        if ($scope.data.hasOwnProperty("chats") !== true) {
+            $scope.data.chats = [];
+        }
+        $scope.data.chats.push({
+            message: user + " Brahhed you",
+            time: timeStamp
+        });
+
+        $state.go('tab.chats');
+    }
+
+    $scope.chatNav = function() {
+        $location.path('/tab/chats');
+    }
 });

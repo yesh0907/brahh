@@ -56,6 +56,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'ProfileCtrl'
     })
 
+    .state('sendTo', {
+        url: "/sendTo",
+        templateUrl: 'templates/send-contacts.html',
+        controller: 'SendContactsCtrl'
+    })
+
     .state('settings', {
         url: "/settings",
         templateUrl: 'templates/settings.html',

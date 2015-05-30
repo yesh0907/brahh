@@ -1,6 +1,10 @@
 <ion-view view-title="Chats" ng-init="start()">
     <ion-nav-buttons side="right">
-        <button class="button icon ion-ios-telephone" ng-click="contactsNav()">
+        <button class="button icon ion-person-add" ng-click="contactsNav()">
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="left">
+        <button class="button icon ion-ios-gear" ng-click="profileNav()">
         </button>
     </ion-nav-buttons>
     <ion-content>
@@ -13,7 +17,7 @@
             </div>
         </div>
     </ion-content>
-    <div class="bar bar-footer bar-balanced" style="position: fixed; bottom: 3em; height: 15%;">
-        <button class="button button-positive button-block ion ion-paper-airplane" style="font-size: 25px;" ng-click="sendChat(chat)"></button>
+    <div class="bar bar-footer bar-positive" style="position: fixed; height: 15%;">
+        <button class="button button-clear button-light button-full ion ion-paper-airplane" style="font-size: 25px;" ng-click="selectUsers()"></button>
     </div>
 </ion-view>

@@ -1,0 +1,15 @@
+<ion-view view-title="Send To..." ng-init="start()">
+    <ion-nav-buttons side="left">
+        <button class="button icon-left ion-chevron-left" ng-click="chatNav()"></button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list">
+            <div class="item" ng-repeat="d in data.contacts">
+                {{d.name}}
+            </div>
+        </div>
+    </ion-content>
+    <div class="bar bar-footer bar-positive" style="position: fixed; height: 15%;">
+        <button class="button button-clear button-light button-full ion ion-paper-airplane" style="font-size: 25px;" ng-click="sendChat(user)"></button>
+    </div>
+</ion-view>
