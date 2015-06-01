@@ -13,7 +13,7 @@
             <input type="text" placeholder="Search" ng-model="query">
         </label>
         <div class="list">
-            <div class="item" ng-repeat="chat in data.chats | orderBy: 'time' | filter: query">
+            <div class="item" ng-repeat="chat in data.chats | orderBy: '-time' |filter: query track by $index">
                 <label style="display: inline-block; float: right; font-size: 55%;">
                     {{chat.time}}
                 </label>
@@ -22,6 +22,6 @@
         </div>
     </ion-content>
     <div class="bar bar-footer bar-positive" style="position: fixed; height: 15%;">
-        <button class="button button-clear button-light button-full ion ion-paper-airplane" style="font-size: 25px;" ng-click="selectUsers()"></button>
+        <button class="button button-clear button-light button-full ion ion-paper-airplane" style="font-size: 45px;" ng-click="selectUsers()"></button>
     </div>
 </ion-view>

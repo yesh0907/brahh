@@ -5,12 +5,12 @@
     <ion-content>
         <div class="list">
             <div class="item list-{{selected}}" ng-repeat="d in data.contacts">
-                <input type="checkbox" ng-model="selected" style="border-radius: 34px;">
+                <input type="checkbox" ng-model="selected">
                 <span class="user-{{selected}}">{{d.name}}</span>
             </div>
         </div>
     </ion-content>
     <div class="bar bar-footer bar-positive" style="position: fixed; height: 15%;">
-        <button class="button button-clear button-light button-full ion ion-paper-airplane" style="font-size: 25px;" ng-click="sendChat(user)"></button>
+        <button class="button button-clear button-light button-full ion ion-paper-airplane" style="font-size: 45px;" ng-click="sendChat(user)"></button>
     </div>
 </ion-view>
