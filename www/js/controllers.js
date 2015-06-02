@@ -150,7 +150,7 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
                     else {
                         $scope.userNames = [];
                         var contacts = [];
-                        for (var i = 1; i < 6; i++) {
+                        for (var i = 1; i < 7; i++) {
                             //console.log($scope.users["simplelogin:"+i]);
                             $scope.userNames.push($scope.users["simplelogin:"+i].userData[0].name);
                             //contacts.push($scope.data.contacts[i-1].name);
@@ -251,6 +251,9 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
                     message: user + " Brahhed you",
                     time: timeStamp
                 });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
+                });
             }
             else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+1)].userData[0].name) {
                 if ($scope.users["simplelogin:"+(j+1)].hasOwnProperty("chats") !== true) {
@@ -259,6 +262,9 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
                 $scope.users["simplelogin:"+(j+1)].chats.push({
                     message: user + " Brahhed you",
                     time: timeStamp
+                });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
                 });
             }
             else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+2)].userData[0].name) {
@@ -269,6 +275,9 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
                     message: user + " Brahhed you",
                     time: timeStamp
                 });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
+                });
             }
             else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+3)].userData[0].name) {
                 if ($scope.users["simplelogin:"+(j+3)].hasOwnProperty("chats") !== true) {
@@ -278,6 +287,9 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
                     message: user + " Brahhed you",
                     time: timeStamp
                 });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
+                });
             }
             else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+4)].userData[0].name) {
                 if ($scope.users["simplelogin:"+(j+4)].hasOwnProperty("chats") !== true) {
@@ -286,6 +298,45 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
                 $scope.users["simplelogin:"+(j+4)].chats.push({
                     message: user + " Brahhed you",
                     time: timeStamp
+                });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
+                });
+            }
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+5)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+5)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+5)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+5)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
+                });
+            }
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+6)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+6)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+6)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+6)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
+                });
+            }
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+7)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+7)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+7)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+7)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+                $ionicPopup.alert({
+                    title: "Brahh Sent",
                 });
             }
         }
