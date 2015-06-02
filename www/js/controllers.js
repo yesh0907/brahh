@@ -28,7 +28,7 @@ app.controller('ChatsCtrl', function($scope, $firebaseObject, $ionicPopup, $stat
     }
 });
 
-app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPopup, $rootScope){
+app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPopup, $state, $rootScope){
     $scope.login = function(username, password) {
         var fbAuth = $firebaseAuth(fb);
         fbAuth.$authWithPassword({
@@ -51,7 +51,7 @@ app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPop
         password: password
     });
   }).then(function(authData) {
-      $location.path('/settings');
+      $state.go('settings');
   }).catch(function(error) {
       $ionicPopup.alert({
         title: "Error",
@@ -150,7 +150,7 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
                     else {
                         $scope.userNames = [];
                         var contacts = [];
-                        for (var i = 1; i < 4; i++) {
+                        for (var i = 1; i < 6; i++) {
                             //console.log($scope.users["simplelogin:"+i]);
                             $scope.userNames.push($scope.users["simplelogin:"+i].userData[0].name);
                             //contacts.push($scope.data.contacts[i-1].name);
