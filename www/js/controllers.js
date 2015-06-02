@@ -1,5 +1,5 @@
 var app = angular.module('starter.controllers', ['firebase'])
-var fb = new Firebase("https://yeshauth.firebaseio.com/");
+var fb = new Firebase("https://brahh-yesh.firebaseio.com/");
 var user;
 
 app.controller('ChatsCtrl', function($scope, $firebaseObject, $ionicPopup, $state) {
@@ -120,6 +120,11 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
         if (fbAuth) {
             var syncObject = $firebaseObject(fb.child("users/" + fbAuth.uid));
             syncObject.$bindTo($scope, "data");
+            //console.log(syncObject);
+
+            var object = $firebaseObject(fb.child("users"));
+            object.$bindTo($scope, "users");
+            //console.log(object);
         }
         else {
             $ionicPopup.alert({
@@ -145,16 +150,60 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
                         e.preventDefault();
                     }
                     else {
-                        if ($scope.data.hasOwnProperty("contacts") !== true) {
-                            $scope.data.contacts = [];
+                        $scope.userNames = [];
+                        var contacts = [];
+                        for (var i = 1; i < 4; i++) {
+                            //console.log($scope.users["simplelogin:"+i]);
+                            $scope.userNames.push($scope.users["simplelogin:"+i].userData[0].name);
+                            contacts.push($scope.data.contacts[i-1].name);
+                            console.log($scope.data.contacts[i-1].name);
                         }
-                        $scope.data.contacts.push({
-                            name: $scope.data.contact
-                        })
-                        $scope.data.contact = "";
+
+                        var match = false;
+                        var counter = 0;
+                        //console.log($scope.userNames);
+                        for (var j = 0; j <= $scope.userNames.length; j++) {
+                            //Contact Already Exsists...
+                            //console.log(contacts[j-1]);
+                            if ($scope.data.contact === contacts[j-1]) {
+                                $ionicPopup.alert({
+                                    title: "Contact Already Exsits"
+                                });
+                            }
+                            //Found A Match and Saved
+                            else if ($scope.data.contact === $scope.userNames[j] && !match) {
+                                match = true;
+                                if ($scope.data.hasOwnProperty("contacts") !== true) {
+                                    $scope.data.contacts = [];
+                                }
+                                $scope.data.contacts.push({
+                                    name: $scope.data.contact
+                                })
+                                $scope.data.contact = "";
+                            }
+                            //Could Not Find a Match
+                            else if (counter >= $scope.userNames.length) {
+                                $ionicPopup.alert({
+                                    title: "No Match Found"
+                                });
+                                $scope.data.contact = "";
+                            }
+                            //Didn't find a match but still looking
+                            else if ($scope.data.contact !== $scope.userNames[j] && !match) {
+                                counter++;
+                                //console.log("Counter: " + counter);
+                            }
+                            else if (match) {
+                                console.log("Matched");
+                                $scope.data.contact = "";
+                                break;
+                            }
+                            // console.log(j);
+                            // console.log($scope.userNames.length);
+                        }
                     }
                 }
-            },
+            }
             ]
         });
     }
@@ -167,12 +216,13 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
     $scope.start = function() {
         fbAuth = fb.getAuth();
         if (fbAuth) {
-            var syncObject = $firebaseObject(fb.child("users"));
+            var syncObject = $firebaseObject(fb.child("users/" + fbAuth.uid));
+            syncObject.$bindTo($scope, "data");
             //console.log(syncObject);
-            syncObject.$bindTo($scope, "user");
-            var sync = $firebaseObject(fb.child("users/" + fbAuth.uid));
-            console.log(sync);
-            sync.$bindTo($scope, "data");
+
+            var object = $firebaseObject(fb.child("users"));
+            object.$bindTo($scope, "users");
+            //console.log(object);
         }
         else {
             $ionicPopup.alert({
@@ -184,23 +234,31 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
     }
 
     $scope.sendChat = function(user) {
-        console.log($scope.user["simplelogin:5"]);
-        user = $scope.user["simplelogin:5"].userData[0].name;
+        user = $scope.data.userData[0].name;
+        var sendTo = [];
         var selected = document.getElementsByClassName("user-true");
-
-        // for (var i = 0; i < selected.length; i++) {
-        //     console.log(selected[i].innerText);
-        // }
-
         var timeStamp = moment().format('llll');
-
-        if ($scope.data.hasOwnProperty("chats") !== true) {
-            $scope.data.chats = [];
+        for (var i = 0; i < selected.length; i++) {
+            //console.log(selected[i].innerText);
+            sendTo.push(selected[i].innerText);
+            // console.log($scope.users["simplelogin:"+(i+1)].userData[0]);
         }
-        $scope.data.chats.push({
-            message: user + " Brahhed you",
-            time: timeStamp
-        });
+        // console.log(sendTo);
+        // console.log(sendTo.length);
+
+        for (var j = 0; j < sendTo.length; j++) {
+            if (sendTo[j] === $scope.users["simplelogin:"+(j+1)].userData[0].name) {
+                console.log("Sending Message");
+                if ($scope.data.hasOwnProperty("chats") !== true) {
+                    $scope.data.chats = [];
+                }
+                $scope.data.chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+            }
+            //console.log($scope.users["simplelogin:"+(j+1)]);
+        }
 
         $state.go('tab.chats');
     }
