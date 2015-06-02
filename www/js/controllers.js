@@ -49,12 +49,10 @@ app.controller('LoginCtrl', function($scope, $firebaseAuth, $location, $ionicPop
       return fbAuth.$authWithPassword({
         email: username,
         password: password
-    })
-  })
-    .then(function(authData) {
-      $location.path('/tab/chats');
-  })
-    .catch(function(error) {
+    });
+  }).then(function(authData) {
+      $location.path('/settings');
+  }).catch(function(error) {
       $ionicPopup.alert({
         title: "Error",
         template: error
@@ -155,8 +153,8 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
                         for (var i = 1; i < 4; i++) {
                             //console.log($scope.users["simplelogin:"+i]);
                             $scope.userNames.push($scope.users["simplelogin:"+i].userData[0].name);
-                            contacts.push($scope.data.contacts[i-1].name);
-                            console.log($scope.data.contacts[i-1].name);
+                            //contacts.push($scope.data.contacts[i-1].name);
+                            //console.log($scope.data.contacts[i-1].name);
                         }
 
                         var match = false;
@@ -206,10 +204,10 @@ app.controller('ContactsCtrl', function($scope, $state, $firebaseObject, $ionicP
             }
             ]
         });
-    }
-    $scope.chatNav = function() {
-        $state.go('tab.chats')
-    }
+}
+$scope.chatNav = function() {
+    $state.go('tab.chats')
+}
 });
 
 app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $ionicPopup, $location) {
@@ -239,25 +237,57 @@ app.controller('SendContactsCtrl', function($scope, $state, $firebaseObject, $io
         var selected = document.getElementsByClassName("user-true");
         var timeStamp = moment().format('llll');
         for (var i = 0; i < selected.length; i++) {
-            //console.log(selected[i].innerText);
             sendTo.push(selected[i].innerText);
-            // console.log($scope.users["simplelogin:"+(i+1)].userData[0]);
         }
-        // console.log(sendTo);
-        // console.log(sendTo.length);
 
-        for (var j = 0; j < sendTo.length; j++) {
-            if (sendTo[j] === $scope.users["simplelogin:"+(j+1)].userData[0].name) {
-                console.log("Sending Message");
-                if ($scope.data.hasOwnProperty("chats") !== true) {
-                    $scope.data.chats = [];
+        for (var j = 1; j <= sendTo.length; j++) {
+            console.log("Contacts to Send Brahh to: " + sendTo[j-1]);
+            console.log("Name of user: " + $scope.users["simplelogin:"+(j)].userData[0].name);
+            if (sendTo[j-1] === $scope.users["simplelogin:"+j].userData[0].name) {
+                if ($scope.users["simplelogin:"+j].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+j].chats = [];
                 }
-                $scope.data.chats.push({
+                $scope.users["simplelogin:"+j].chats.push({
                     message: user + " Brahhed you",
                     time: timeStamp
                 });
             }
-            //console.log($scope.users["simplelogin:"+(j+1)]);
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+1)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+1)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+1)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+1)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+            }
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+2)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+2)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+2)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+2)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+            }
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+3)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+3)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+3)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+3)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+            }
+            else if (sendTo[j-1] === $scope.users["simplelogin:"+(j+4)].userData[0].name) {
+                if ($scope.users["simplelogin:"+(j+4)].hasOwnProperty("chats") !== true) {
+                    $scope.users["simplelogin:"+(j+4)].chats = [];
+                }
+                $scope.users["simplelogin:"+(j+4)].chats.push({
+                    message: user + " Brahhed you",
+                    time: timeStamp
+                });
+            }
         }
 
         $state.go('tab.chats');

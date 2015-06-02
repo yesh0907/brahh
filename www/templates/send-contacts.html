@@ -4,9 +4,9 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <div class="item list-{{selected}}" ng-repeat="d in data.contacts">
-                <input type="checkbox" ng-model="selected">
-                <span class="user-{{selected}}">{{d.name}}</span>
+            <div class="item list-{{select}}" ng-repeat="d in data.contacts">
+                <input type="checkbox" ng-model="select">
+                <span class="user-{{select}}">{{d.name}}</span>
             </div>
         </div>
     </ion-content>
